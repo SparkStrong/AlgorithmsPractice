@@ -2,6 +2,7 @@ package java8.java8Action.chapter4;
 
 import com.sun.org.apache.bcel.internal.generic.SWAP;
 
+import java.security.PublicKey;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -20,15 +21,17 @@ public class StreamBasic {
 
 //        sumCaloricDishes(Dish.menu);
 
-        List<Dish> dishes = new ArrayList<>();
+//        List<Dish> dishes = new ArrayList<>();
 //        sumCaloricDishes2(dishes);
 //        sumCaloricDishes(dishes);
 
-        int res = highestCaloricDishes(Dish.menu);
+//        int res = highestCaloricDishes(Dish.menu);
 //        System.out.println(res);
 
-        Stream<Integer> a = Stream.of(res);
-        a.forEach(System.out::println);
+//        Stream<Integer> a = Stream.of(res);
+//        a.forEach(System.out::println);
+
+        testGroupby();
     }
 
     public static List<String> getHighCaloricDishesName(List<Dish> dishes) {
@@ -79,5 +82,24 @@ public class StreamBasic {
         }
 
         return highestCaloric.orElse(-1);
+    }
+
+    public enum CaloricLevel {DIET, NORMAL, FAT};
+
+    public static void testGroupby() {
+        Map<Dish.Type, List<Dish>> dishesByType = Dish.menu.stream()
+                .collect(Collectors.groupingBy(Dish::getType));
+
+        dishesByType.forEach( (k, v) -> System.out.println("Type = " + k + "   V = " + v));
+
+        Map<CaloricLevel, List<Dish>> dishesByCaloric = Dish.menu.
+                stream().
+                collect(Collectors.groupingBy(
+                        dish -> {
+                            if (dish.getCalories() < 300) { return CaloricLevel.DIET; }
+                            else if (dish.getCalories() <= 700) { return CaloricLevel.NORMAL; }
+                            else { return CaloricLevel.FAT; }
+                        }));
+        dishesByCaloric.forEach((k, v) -> System.out.println("K = " + k + "  V = " + v));
     }
 }
