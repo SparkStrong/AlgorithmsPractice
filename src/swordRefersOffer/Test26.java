@@ -1,5 +1,9 @@
 package swordRefersOffer;
 
+import com.sun.corba.se.impl.ior.ByteBuffer;
+
+import java.nio.channels.ServerSocketChannel;
+
 /**
  * Created by Nack on 2017/12/25.
  */
@@ -14,5 +18,7 @@ public class Test26 {
 
         System.out.println("test 3");
         tmp.test3();
+        ByteBuffer byteBuffer = new ByteBuffer();
+        byteBuffer.append("c");
     }
 }
